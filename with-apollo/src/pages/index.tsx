@@ -50,8 +50,8 @@ export default function Index() {
 
         cache.modify({
           fields: {
-            todosAll(existingTodosRefs: Reference[] = [], { toReference }) {
-              return [toReference(data.todo), ...existingTodosRefs];
+            todosAll(todosRefs: Reference[] = [], { toReference }) {
+              return [...todosRefs, toReference(data.todo)];
             },
           },
         });
@@ -81,8 +81,8 @@ export default function Index() {
 
         cache.modify({
           fields: {
-            todosAll(existingTodosRefs: Reference[] = [], { readField }) {
-              return existingTodosRefs.filter(todoRef => readField('id', todoRef) !== data.todo.id);
+            todosAll(todosRefs: Reference[] = [], { readField }) {
+              return todosRefs.filter(todoRef => readField('id', todoRef) !== data.todo.id);
             },
           },
         });
