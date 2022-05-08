@@ -1,20 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
 
-import { GET_TODOS, GetTodosData, GetTodosVars } from '@/graphql/todos';
+import { GET_TODO_BY_ID, GetTodoByIdData, GetTodoByIdVars } from '../stores/graphql/todos/queries/getById';
 
 export default function Bar() {
-  const { loading, data, error } = useQuery(gql`
-    query GetTodoById($id: Float!) {
-      todo: todosById(id: $id) {
-        id
-        title
-        completed
-      }
-    }
-  `, {
+  const { loading, data, error } = useQuery<GetTodoByIdData, GetTodoByIdVars>(GET_TODO_BY_ID, {
     variables: {
-      id: 1,
-    }
+      id: 2,
+    },
   });
   const todo = data?.todo;
 
@@ -23,7 +15,7 @@ export default function Bar() {
       <div>
         Loading...
       </div>
-    )
+    );
   }
 
   return (

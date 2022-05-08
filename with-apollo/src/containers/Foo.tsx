@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { GET_TODOS, GetTodosData, GetTodosVars } from '@/graphql/todos';
+import { GET_TODOS, GetTodosData, GetTodosVars } from '@/stores/graphql/todos/queries/get';
 
 export default function Foo() {
   const { loading, data, error } = useQuery<GetTodosData, GetTodosVars>(GET_TODOS);

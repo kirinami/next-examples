@@ -3,32 +3,25 @@ import Image from 'next/image';
 import Error from 'next/error';
 import { Reference, useMutation, useQuery } from '@apollo/client';
 
-import {
-  CREATE_TODO,
-  CreateTodoData,
-  CreateTodoVars, DELETE_TODO, DeleteTodoData, DeleteTodoVars,
-  GET_TODOS,
-  GetTodosData,
-  GetTodosVars, Todo,
-  UPDATE_TODO, UpdateTodoData, UpdateTodoVars,
-} from '@/graphql/todos';
-import initializeApolloClient from '@/helpers/apollo/initializeApolloClient';
-import withApolloState from '@/helpers/apollo/withApolloState';
+import Foo from '@/containers/Foo';
+import Bar from '@/containers/Bar';
+import { Todo } from '@/stores/graphql/todos/fragments/todo';
+import { GET_TODOS, GetTodosData, GetTodosVars } from '@/stores/graphql/todos/queries/get';
+import { CREATE_TODO, CreateTodoData, CreateTodoVars } from '@/stores/graphql/todos/mutations/create';
+import { UPDATE_TODO, UpdateTodoData, UpdateTodoVars } from '@/stores/graphql/todos/mutations/update';
+import { DELETE_TODO, DeleteTodoData, DeleteTodoVars } from '@/stores/graphql/todos/mutations/delete';
+import wrapper from '@/stores/wrapper';
 import styles from '@/styles/index.module.scss';
-import Foo from '../containers/Foo';
-import Bar from '../containers/Bar';
 
-export async function getServerSideProps() {
-  const apolloClient = initializeApolloClient();
-
+export const getServerSideProps = wrapper.getServerSideProps(({ apolloClient }) => async () => {
   await apolloClient.query({
     query: GET_TODOS,
   });
 
-  return withApolloState(apolloClient, {
+  return {
     props: {},
-  });
-}
+  };
+});
 
 export default function Index() {
   const { loading, data, error } = useQuery<GetTodosData, GetTodosVars>(GET_TODOS);
