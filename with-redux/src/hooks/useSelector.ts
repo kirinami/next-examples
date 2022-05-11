@@ -1,6 +1,10 @@
 import { useSelector as useBaseSelector } from 'react-redux';
 
-import { Selector } from '@/helpers/initReduxStore';
+import { ReduxStore } from '@/helpers/initReduxStore';
+
+export type State = ReturnType<ReduxStore['getState']>;
+
+export type Selector<Selected> = (state: State) => Selected;
 
 export type Equality<Selected> = (left: Selected, right: Selected) => boolean;
 

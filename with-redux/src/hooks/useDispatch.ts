@@ -1,6 +1,8 @@
 import { useDispatch as useBaseDispatch } from 'react-redux';
 
-import { Dispatch } from '@/helpers/initReduxStore';
+import { ReduxStore } from '@/helpers/initReduxStore';
+
+export type Dispatch = ReduxStore['dispatch'];
 
 export default function useDispatch() {
   return useBaseDispatch<Dispatch>();

@@ -2,24 +2,21 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import todosSlice from '@/stores/todos/todos';
 
-export type Store = ReturnType<typeof createReduxStore>;
-export type State = ReturnType<Store['getState']>;
-export type Dispatch = Store['dispatch'];
-export type Selector<Selected> = (state: State) => Selected;
+export type ReduxStore = ReturnType<typeof createReduxStore>;
 
-let reduxStoreMemo: ReturnType<typeof createReduxStore> | undefined;
+export let reduxStoreMemo: ReduxStore | undefined;
 
 export const isServer = typeof window === 'undefined';
 
-export const createReduxStore = (preloadedState?: any) => configureStore({
+export const createReduxStore = (preloadedState?: Record<string, unknown>) => configureStore({
   reducer: {
     [todosSlice.name]: todosSlice.reducer,
   },
   preloadedState,
-  devTools: process.env.NODE_ENV === 'development',
+  devTools: !isServer && process.env.NODE_ENV === 'development',
 });
 
-export const initReduxStore = (initialState?: any) => {
+export const initReduxStore = (initialState?: Record<string, unknown>) => {
   let reduxStore = reduxStoreMemo ?? createReduxStore(initialState);
 
   if (initialState && reduxStoreMemo) {

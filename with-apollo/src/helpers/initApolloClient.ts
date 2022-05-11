@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 
-let apolloClientMemo: ReturnType<typeof createApolloClient> | undefined;
+export let apolloClientMemo: ReturnType<typeof createApolloClient> | undefined;
 
 export const isServer = typeof window === 'undefined';
 

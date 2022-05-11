@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 
-import { initReduxStore, Store } from './initReduxStore';
+import { ReduxStore, initReduxStore } from './initReduxStore';
 
 export type GetProps = {
   isFirstServerCall: boolean,
-  reduxStore: Store,
+  reduxStore: ReduxStore,
 };
 
 export const initServerSideProps = (get: (props: GetProps) => GetServerSideProps): GetServerSideProps => async (ctx) => {
