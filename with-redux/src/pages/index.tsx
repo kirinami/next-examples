@@ -2,20 +2,21 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Error from 'next/error';
 
+import Button from '@/components/Button';
 import Foo from '@/containers/Foo';
 import Bar from '@/containers/Bar';
-import useAction from '@/stores/hooks/useAction';
-import todosRetrieve from '@/stores/slices/todos/actions/retrieve';
-import todosAdd from '@/stores/slices/todos/actions/add';
-import todosUpdate from '@/stores/slices/todos/actions/update';
-import todosDelete from '@/stores/slices/todos/actions/delete';
-import useTodos from '@/stores/slices/todos/selectors/useTodos';
-import Todo from '@/stores/slices/todos/types/Todo';
-import { wrapper } from '@/stores/store';
+import initServerSideProps from '@/helpers/initServerSideProps';
+import useAction from '@/hooks/useAction';
+import todosRetrieve from '@/stores/todos/actions/retrieve';
+import todosAdd from '@/stores/todos/actions/add';
+import todosUpdate from '@/stores/todos/actions/update';
+import todosDelete from '@/stores/todos/actions/delete';
+import useTodos from '@/stores/todos/selectors/useTodos';
+import Todo from '@/stores/todos/types/Todo';
 import styles from '@/styles/index.module.scss';
 
-export const getServerSideProps = wrapper.getServerSideProps(({ dispatch }) => async () => {
-  await dispatch(todosRetrieve());
+export const getServerSideProps = initServerSideProps(({ reduxStore }) => async () => {
+  await reduxStore.dispatch(todosRetrieve());
 
   return {
     props: {},
@@ -88,8 +89,8 @@ export default function Index() {
               <h2>{todo.id} - {todo.title}</h2>
               <p>{todo.completed ? 'Yes' : 'No'}</p>
               <div>
-                <button onClick={() => handleUpdateTodo(todo)}>Update</button>
-                <button onClick={() => handleRemoveTodo(todo)}>Remove</button>
+                <Button onClick={() => handleUpdateTodo(todo)}>Update</Button>
+                <Button onClick={() => handleRemoveTodo(todo)}>Remove</Button>
               </div>
             </div>
           ))}

@@ -1,5 +1,4 @@
 import { AnyAction, createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 
 import todosRetrieve from './actions/retrieve';
 import todosAdd from './actions/add';
@@ -20,8 +19,6 @@ const todosSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, { payload: { [todosSlice.name]: payload } }: AnyAction) => payload);
-
     builder.addCase(todosRetrieve.fulfilled, (state, { payload }) => {
       state.todos = payload;
     });

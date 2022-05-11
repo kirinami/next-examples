@@ -1,14 +1,18 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 
-import { wrapper } from '@/stores/store';
-
+import { initReduxStore } from '@/helpers/initReduxStore';
 import '@/styles/_app.scss';
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+  const reduxStore = useMemo(() => initReduxStore(pageProps.extractData), [pageProps.extractData]);
+
   return (
-    <Component {...pageProps} />
+    <Provider store={reduxStore}>
+      <Component {...pageProps} />
+    </Provider>
   );
 };
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;

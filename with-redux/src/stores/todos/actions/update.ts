@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import http from '@/helpers/axios/http';
+import http from '@/utils/http';
 
 import Todo from '../types/Todo';
 

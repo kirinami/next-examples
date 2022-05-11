@@ -1,13 +1,11 @@
-import useTodoById from '@/stores/slices/todos/selectors/useTodoById';
+import useTodoById from '@/stores/todos/selectors/useTodoById';
 
 export default function Bar() {
   const todo = useTodoById(2);
 
   if (!todo) {
     return (
-      <div>
-        Loading...
-      </div>
+      <div>Error</div>
     );
   }
 

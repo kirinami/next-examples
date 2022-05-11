@@ -1,13 +1,18 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { AppProps } from 'next/app';
+import { ApolloProvider } from '@apollo/client';
 
-import wrapper from '@/stores/wrapper';
+import { initApolloClient } from '@/helpers/initApolloClient';
 import '@/styles/_app.scss';
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+  const apolloClient = useMemo(() => initApolloClient(pageProps.extractData), [pageProps.extractData]);
+
   return (
-    <Component {...pageProps} />
+    <ApolloProvider client={apolloClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
   );
 };
 
-export default wrapper.withApollo(MyApp);
+export default MyApp;

@@ -1,19 +1,21 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Error from 'next/error';
-import { Reference, useMutation, useQuery } from '@apollo/client';
+import { Reference, useMutation } from '@apollo/client';
 
+import Button from '@/components/Button';
 import Foo from '@/containers/Foo';
 import Bar from '@/containers/Bar';
-import { Todo } from '@/stores/graphql/todos/fragments/todo';
-import { GET_TODOS, GetTodosData, GetTodosVars } from '@/stores/graphql/todos/queries/get';
-import { CREATE_TODO, CreateTodoData, CreateTodoVars } from '@/stores/graphql/todos/mutations/create';
-import { UPDATE_TODO, UpdateTodoData, UpdateTodoVars } from '@/stores/graphql/todos/mutations/update';
-import { DELETE_TODO, DeleteTodoData, DeleteTodoVars } from '@/stores/graphql/todos/mutations/delete';
-import wrapper from '@/stores/wrapper';
+import { Todo } from '@/stores/todos/fragments/todo';
+import { GET_TODOS } from '@/stores/todos/queries/get';
+import { CREATE_TODO, CreateTodoData, CreateTodoVars } from '@/stores/todos/mutations/create';
+import { UPDATE_TODO, UpdateTodoData, UpdateTodoVars } from '@/stores/todos/mutations/update';
+import { DELETE_TODO, DeleteTodoData, DeleteTodoVars } from '@/stores/todos/mutations/delete';
+import useTodos from '@/stores/todos/selectors/useTodos';
+import { initServerSideProps } from '@/helpers/initServerSideProps';
 import styles from '@/styles/index.module.scss';
 
-export const getServerSideProps = wrapper.getServerSideProps(({ apolloClient }) => async () => {
+export const getServerSideProps = initServerSideProps(({ apolloClient }) => async () => {
   await apolloClient.query({
     query: GET_TODOS,
   });
@@ -24,12 +26,11 @@ export const getServerSideProps = wrapper.getServerSideProps(({ apolloClient }) 
 });
 
 export default function Index() {
-  const { loading, data, error } = useQuery<GetTodosData, GetTodosVars>(GET_TODOS);
+  const { loading, todos, error } = useTodos();
+
   const [createTodo] = useMutation<CreateTodoData, CreateTodoVars>(CREATE_TODO);
   const [updateTodo] = useMutation<UpdateTodoData, UpdateTodoVars>(UPDATE_TODO);
   const [deleteTodo] = useMutation<DeleteTodoData, DeleteTodoVars>(DELETE_TODO);
-
-  const todos = data?.todos || [];
 
   const handleAddTodo = async () => {
     await createTodo({
@@ -84,6 +85,12 @@ export default function Index() {
     });
   };
 
+  if (loading) {
+    return (
+      <div>Loading...</div>
+    );
+  }
+
   if (error) {
     return (
       <Error statusCode={401}/>
@@ -118,8 +125,8 @@ export default function Index() {
               <h2>{todo.id} - {todo.title}</h2>
               <p>{todo.completed ? 'Yes' : 'No'}</p>
               <div>
-                <button onClick={() => handleUpdateTodo(todo)}>Update</button>
-                <button onClick={() => handleRemoveTodo(todo)}>Remove</button>
+                <Button onClick={() => handleUpdateTodo(todo)}>Update</Button>
+                <Button onClick={() => handleRemoveTodo(todo)}>Remove</Button>
               </div>
             </div>
           ))}

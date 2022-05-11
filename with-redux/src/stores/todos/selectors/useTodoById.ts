@@ -1,5 +1,6 @@
-import useSelector from '@/stores/hooks/useSelector';
 import { createSelector } from 'reselect';
+
+import useSelector from '@/hooks/useSelector';
 
 import { selectTodos } from './useTodos';
 

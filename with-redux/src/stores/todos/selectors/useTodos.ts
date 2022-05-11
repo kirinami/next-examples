@@ -1,5 +1,5 @@
-import useSelector from '@/stores/hooks/useSelector';
-import { State } from '@/stores/store';
+import useSelector from '@/hooks/useSelector';
+import { State } from '@/helpers/initReduxStore';
 
 export const selectTodos = (state: State) => state.todos.todos;
 

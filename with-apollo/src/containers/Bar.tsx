@@ -1,20 +1,17 @@
-import { gql, useQuery } from '@apollo/client';
-
-import { GET_TODO_BY_ID, GetTodoByIdData, GetTodoByIdVars } from '../stores/graphql/todos/queries/getById';
+import useTodoById from '@/stores/todos/selectors/useTodoById';
 
 export default function Bar() {
-  const { loading, data, error } = useQuery<GetTodoByIdData, GetTodoByIdVars>(GET_TODO_BY_ID, {
-    variables: {
-      id: 2,
-    },
-  });
-  const todo = data?.todo;
+  const { loading, todo, error } = useTodoById(2)
 
-  if (!todo) {
+  if (loading) {
     return (
-      <div>
-        Loading...
-      </div>
+      <div>Loading...</div>
+    );
+  }
+
+  if (!todo || error) {
+    return (
+      <div>Error</div>
     );
   }
 

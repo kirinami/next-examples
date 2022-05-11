@@ -1,4 +1,4 @@
-import useTodos from '@/stores/slices/todos/selectors/useTodos';
+import useTodos from '@/stores/todos/selectors/useTodos';
 
 export default function Foo() {
   const todos = useTodos();
